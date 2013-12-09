@@ -42,7 +42,8 @@ class qTranslateWidget extends WP_Widget {
 	function update($new_instance, $old_instance) {
 		$instance = $old_instance;
 		$instance['title'] = $new_instance['title'];
-		if(isset($new_instance['hide-title'])) $instance['hide-title'] = $new_instance['hide-title'];
+		//if(isset($new_instance['hide-title'])) $instance['hide-title'] = $new_instance['hide-title'];
+		$instance['hide-title'] = $new_instance['hide-title'];
 		$instance['type'] = $new_instance['type'];
 
 		return $instance;
