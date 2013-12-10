@@ -105,8 +105,17 @@ function qtrans_modifyRichEditor($old_content) {
 	// insert language, visual and html buttons
 	$el = qtrans_getSortedLanguages();
 	foreach($el as $language) {
-		$content .= qtrans_insertTitleInput($language);
+		$content .= qtrans_insertTitleInput2($language);
 	}
+	// ugly hack to insert slug after last title element and spacing around it
+	$content .= "
+        qtd.appendChild(document.createElement('p'));
+        if(slug) {
+          qtd.appendChild(slug); 
+          qtd.appendChild(document.createElement('p'));
+        }
+    ";		
+	
 	$el = qtrans_getSortedLanguages(true);
 	foreach($el as $language) {
 		$content .= qtrans_createEditorToolbarButton($language, $id);
@@ -331,6 +340,39 @@ function qtrans_insertTitleInput($language){
 		
 		";
 	return $html;	
+}
+
+function qtrans_insertTitleInput2($language){
+	global $q_config;
+	$html ="
+		var td = document.getElementById('titlediv');
+		var qtd = document.createElement('div');
+		var h = document.createElement('div');
+		var l = document.createTextNode('".__("Title", 'qtranslate')." (".$q_config['language_name'][$language].")');
+		var ti = document.createElement('input');
+		var slug = document.getElementById('edit-slug-box');
+		
+		ti.type = 'text';
+		ti.id = 'qtrans_title_".$language."';
+		ti.tabIndex = '1';
+		ti.value = qtrans_use('".$language."', document.getElementById('title').value);
+		ti.onchange = qtrans_integrate_title;
+		ti.className = 'qtrans_title_input2'
+		h.className = 'qtrans_title';
+		
+		qtd.className = 'postarea';
+		
+		h.appendChild(l);
+		qtd.appendChild(h);
+		qtd.appendChild(ti);
+";
+
+	$html.="
+		td.parentNode.insertBefore(qtd,td);
+		
+		";
+	//echo $html;	
+	return $html;
 }
 
 function qtrans_createEditorToolbarButton($language, $id, $js_function = 'switchEditors.go', $label = ''){

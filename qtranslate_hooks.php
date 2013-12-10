@@ -85,6 +85,8 @@ function qtrans_optionFilter($do='enable') {
 function qtrans_adminHeader() {
 	echo "<style type=\"text/css\" media=\"screen\">\n";
 	echo ".qtrans_title_input { border:0pt none; font-size:1.7em; outline-color:invert; outline-style:none; outline-width:medium; padding:0pt; width:100%; }\n";
+	echo ".qtrans_title {  display:  inline-block;  width:15%;}\n";
+	echo ".qtrans_title_input2 { border:0pt none; font-size:1.7em; outline-color:invert; outline-style:none; outline-width:medium; padding:0pt; width:84%; }\n";
 	echo ".qtrans_title_wrap { border-color:#CCCCCC; border-style:solid; border-width:1px; padding:2px 3px; }\n";
 	echo "#qtrans_textarea_content { padding:6px; border:0 none; line-height:150%; outline: none; margin:0pt; width:100%; -moz-box-sizing: border-box;";
 	echo	"-webkit-box-sizing: border-box; -khtml-box-sizing: border-box; box-sizing: border-box; }\n";
