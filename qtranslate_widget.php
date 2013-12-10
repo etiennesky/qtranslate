@@ -90,7 +90,7 @@ function qtrans_generateLanguageSelectCode($style='', $id='', $show_inline=false
 				if($language == $q_config['language'])
 					$classes[] = 'active';
 				if ( ! $show_inline=='on') $html .= '<li class="'. implode(' ', $classes) .'">';
-				else $html .= '<div style="display: block; width: auto; float: left; padding-right: 20px;" class="'. implode(' ', $classes) .'">';
+				else $html .= '<div style="display: block; width: auto; float: left; padding-right: 10px;" class="'. implode(' ', $classes) .'">';
 				$html .= '<a href="'.qtrans_convertURL($url, $language).'"';
 				// set hreflang
 				$html .= ' hreflang="'.$language.'" title="'.$q_config['language_name'][$language].'"';
