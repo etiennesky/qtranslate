@@ -479,6 +479,13 @@ function qtranslate_conf() {
 				</td>
 			</tr>
 			<tr valign="top">
+				<th scope="row"><?php _e('Show default language text', 'qtranslate');?></th>
+				<td>
+					<label for="show_default_lang_content"><input type="checkbox" name="show_default_lang_content" id="show_default_lang_content" value="1"<?php echo ($q_config['show_default_lang_content'])?' checked="checked"':''; ?>/> <?php _e('When content is not available for selected language, show default language content.', 'qtranslate'); ?></label>
+					<br/>
+				</td>
+			</tr>
+			<tr valign="top">
 				<th scope="row"><?php _e('Detect Browser Language', 'qtranslate');?></th>
 				<td>
 					<label for="detect_browser_language"><input type="checkbox" name="detect_browser_language" id="detect_browser_language" value="1"<?php echo ($q_config['detect_browser_language'])?' checked="checked"':''; ?>/> <?php _e('Detect the language of the browser and redirect accordingly.', 'qtranslate'); ?></label>
@@ -515,13 +522,6 @@ function qtranslate_conf() {
 					<input type="text" name="ignore_file_types" id="ignore_file_types" value="<?php echo $q_config['ignore_file_types']; ?>" style="width:100%"/>
 					<br/>
 					<?php _e('Don\'t convert Links to files of the given file types. (Default: gif,jpg,jpeg,png,pdf,swf,tif,rar,zip,7z,mpg,divx,mpeg,avi,css,js)', 'qtranslate'); ?>
-				</td>
-			</tr>
-			<tr valign="top">
-				<th scope="row"><?php _e('Show default language text', 'qtranslate');?></th>
-				<td>
-					<label for="show_default_lang_content"><input type="checkbox" name="show_default_lang_content" id="show_default_lang_content" value="1"<?php echo ($q_config['show_default_lang_content'])?' checked="checked"':''; ?>/> <?php _e('When content is not available for selected language, show default language content.', 'qtranslate'); ?></label>
-					<br/>
 				</td>
 			</tr>
 			<tr valign="top">
