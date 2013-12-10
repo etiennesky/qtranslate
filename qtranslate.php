@@ -117,6 +117,9 @@ $q_config['detect_browser_language'] = true;
 // hide pages without content
 $q_config['hide_untranslated'] = false;
 
+// show default lang content when content is not available for selected language
+$q_config['show_default_lang_content'] = false;
+
 // automatically update .mo files
 $q_config['auto_update_mo'] = true;
 

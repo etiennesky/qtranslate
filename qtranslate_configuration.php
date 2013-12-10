@@ -225,6 +225,7 @@ function qtranslate_conf() {
 		qtrans_checkSetting('ignore_file_types',		true, QT_STRING);
 		qtrans_checkSetting('detect_browser_language',	true, QT_BOOLEAN);
 		qtrans_checkSetting('hide_untranslated',		true, QT_BOOLEAN);
+		qtrans_checkSetting('show_default_lang_content',true, QT_BOOLEAN);
 		qtrans_checkSetting('use_strftime',				true, QT_INTEGER);
 		qtrans_checkSetting('url_mode',					true, QT_INTEGER);
 		qtrans_checkSetting('auto_update_mo',			true, QT_BOOLEAN);
@@ -514,6 +515,13 @@ function qtranslate_conf() {
 					<input type="text" name="ignore_file_types" id="ignore_file_types" value="<?php echo $q_config['ignore_file_types']; ?>" style="width:100%"/>
 					<br/>
 					<?php _e('Don\'t convert Links to files of the given file types. (Default: gif,jpg,jpeg,png,pdf,swf,tif,rar,zip,7z,mpg,divx,mpeg,avi,css,js)', 'qtranslate'); ?>
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><?php _e('Show default language text', 'qtranslate');?></th>
+				<td>
+					<label for="show_default_lang_content"><input type="checkbox" name="show_default_lang_content" id="show_default_lang_content" value="1"<?php echo ($q_config['show_default_lang_content'])?' checked="checked"':''; ?>/> <?php _e('When content is not available for selected language, show default language content.', 'qtranslate'); ?></label>
+					<br/>
 				</td>
 			</tr>
 			<tr valign="top">
