@@ -42,6 +42,7 @@ function qtrans_init() {
 		delete_option('qtranslate_detect_browser_language');
 		delete_option('qtranslate_hide_untranslated');
 		delete_option('qtranslate_show_default_lang_content');
+		delete_option('qtranslate_show_titles_inline');
 		delete_option('qtranslate_auto_update_mo');
 		delete_option('qtranslate_next_update_mo');
 		delete_option('qtranslate_hide_default_language');
@@ -248,6 +249,7 @@ function qtrans_loadConfig() {
 	$detect_browser_language = get_option('qtranslate_detect_browser_language');
 	$hide_untranslated = get_option('qtranslate_hide_untranslated');
 	$show_default_lang_content = get_option('qtranslate_show_default_lang_content');
+	$show_titles_inline = get_option('qtranslate_show_titles_inline');
 	$auto_update_mo = get_option('qtranslate_auto_update_mo');
 	$term_name = get_option('qtranslate_term_name');
 	$hide_default_language = get_option('qtranslate_hide_default_language');
@@ -269,6 +271,7 @@ function qtrans_loadConfig() {
 	$detect_browser_language = qtrans_validateBool($detect_browser_language, $q_config['detect_browser_language']);
 	$hide_untranslated = qtrans_validateBool($hide_untranslated, $q_config['hide_untranslated']);
 	$show_default_lang_content = qtrans_validateBool($show_default_lang_content, $q_config['show_default_lang_content']);
+	$show_titles_inline = qtrans_validateBool($show_titles_inline, $q_config['show_titles_inline']);
 	$auto_update_mo = qtrans_validateBool($auto_update_mo, $q_config['auto_update_mo']);
 	$hide_default_language = qtrans_validateBool($hide_default_language, $q_config['hide_default_language']);
 	
@@ -295,6 +298,7 @@ function qtrans_loadConfig() {
 	$q_config['detect_browser_language'] = $detect_browser_language;
 	$q_config['hide_untranslated'] = $hide_untranslated;
 	$q_config['show_default_lang_content'] = $show_default_lang_content;
+	$q_config['show_titles_inline'] = $show_titles_inline;
 	$q_config['auto_update_mo'] = $auto_update_mo;
 	$q_config['hide_default_language'] = $hide_default_language;
 	$q_config['term_name'] = $term_name;
@@ -332,6 +336,10 @@ function qtrans_saveConfig() {
 		update_option('qtranslate_show_default_lang_content', '1');
 	else
 		update_option('qtranslate_show_default_lang_content', '0');
+	if($q_config['show_titles_inline'])
+		update_option('qtranslate_show_titles_inline', '1');
+	else
+		update_option('qtranslate_show_titles_inline', '0');
 	if($q_config['auto_update_mo'])
 		update_option('qtranslate_auto_update_mo', '1');
 	else

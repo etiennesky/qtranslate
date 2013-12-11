@@ -105,7 +105,7 @@ function qtrans_modifyRichEditor($old_content) {
 	// insert language, visual and html buttons
 	$el = qtrans_getSortedLanguages();
 
-	$display_inline = true; // set this to false to use old display (which takes up many lines)
+	$display_inline = $q_config['show_titles_inline'];
 	if($display_inline) 
 		$content .= qtrans_insertTitleInput2_pre($language);
 	foreach($el as $language) {

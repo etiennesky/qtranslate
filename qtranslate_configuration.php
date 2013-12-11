@@ -226,6 +226,7 @@ function qtranslate_conf() {
 		qtrans_checkSetting('detect_browser_language',	true, QT_BOOLEAN);
 		qtrans_checkSetting('hide_untranslated',		true, QT_BOOLEAN);
 		qtrans_checkSetting('show_default_lang_content',true, QT_BOOLEAN);
+		qtrans_checkSetting('show_titles_inline',       true, QT_BOOLEAN);
 		qtrans_checkSetting('use_strftime',				true, QT_INTEGER);
 		qtrans_checkSetting('url_mode',					true, QT_INTEGER);
 		qtrans_checkSetting('auto_update_mo',			true, QT_BOOLEAN);
@@ -554,6 +555,12 @@ function qtranslate_conf() {
 					<label for="qtranslate_reset3"><input type="checkbox" name="qtranslate_reset3" id="qtranslate_reset3" value="1"/> <?php _e('Also delete Translations for Categories/Tags/Link Categories.', 'qtranslate'); ?></label>
 					<br/>
 					<?php _e('If something isn\'t working correctly, you can always try to reset all qTranslate settings. A Reset won\'t delete any posts but will remove all settings (including all languages added).', 'qtranslate'); ?>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php _e('Show titles in a single line', 'qtranslate');?></th>
+				<td>
+					<label for="show_titles_inline"><input type="checkbox" name="show_titles_inline" id="show_titles_inline" value="1"<?php echo ($q_config['show_titles_inline'])?' checked="checked"':''; ?>/> <?php _e('Show post editor titles in a single line - this saves space in the editor dialog.', 'qtranslate'); ?></label>
 				</td>
 			</tr>
 			<tr>

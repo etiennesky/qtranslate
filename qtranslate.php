@@ -120,6 +120,9 @@ $q_config['hide_untranslated'] = false;
 // show default lang content when content is not available for selected language
 $q_config['show_default_lang_content'] = false;
 
+// Show post editor titles in a single line
+$q_config['show_titles_inline'] = false;
+
 // automatically update .mo files
 $q_config['auto_update_mo'] = true;
 
