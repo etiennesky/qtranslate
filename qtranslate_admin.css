@@ -1,8 +1,8 @@
 
 /* qtrans_adminHeader() */
 .qtrans_title_input { border:0pt none; font-size:1.7em; outline-color:invert; outline-style:none; outline-width:medium; padding:0pt; width:100%; }
-.qtrans_title {  display:  inline-block;  width:15%;}
-.qtrans_title_input2 { border:0pt none; font-size:1.7em; outline-color:invert; outline-style:none; outline-width:medium; padding:0pt; width:84%; }
+.qtrans_title {  display:  inline-block;  width:12%;}
+.qtrans_title_input2 { border:0pt none; font-size:1.7em; outline-color:invert; outline-style:none; outline-width:medium; padding:0pt; width:87%; margin-bottom: 5px; }
 .qtrans_title_wrap { border-color:#CCCCCC; border-style:solid; border-width:1px; padding:2px 3px; }
 #qtrans_textarea_content { padding:6px; border:0 none; line-height:150%; outline: none; margin:0pt; width:100%; -moz-box-sizing: border-box;
 						   -webkit-box-sizing: border-box; -khtml-box-sizing: border-box; box-sizing: border-box; }
