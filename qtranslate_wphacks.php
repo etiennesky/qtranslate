@@ -104,23 +104,24 @@ function qtrans_modifyRichEditor($old_content) {
 	
 	// insert language, visual and html buttons
 	$el = qtrans_getSortedLanguages();
+
+	$display_inline = true; // set this to false to use old display (which takes up many lines)
+	if($display_inline) 
+		$content .= qtrans_insertTitleInput2_pre($language);
 	foreach($el as $language) {
-		$content .= qtrans_insertTitleInput2($language);
+		if($display_inline)
+			$content .= qtrans_insertTitleInput2($language,count($el));
+		else
+			$content .= qtrans_insertTitleInput($language,count($el));
 	}
-	// ugly hack to insert slug after last title element and spacing around it
-	$content .= "
-        qtd.appendChild(document.createElement('p'));
-        if(slug) {
-          qtd.appendChild(slug); 
-          qtd.appendChild(document.createElement('p'));
-        }
-    ";		
-	
+	if($display_inline)
+		$content .= qtrans_insertTitleInput2_pos($language);
+
 	$el = qtrans_getSortedLanguages(true);
 	foreach($el as $language) {
 		$content .= qtrans_createEditorToolbarButton($language, $id);
 	}
-	
+
 	$content = apply_filters('qtranslate_toolbar', $content);
 	
 	// hide old title bar
@@ -342,36 +343,57 @@ function qtrans_insertTitleInput($language){
 	return $html;	
 }
 
-function qtrans_insertTitleInput2($language){
+function qtrans_insertTitleInput2_pre($language){
+	global $q_config;
+	$html ="
+		var qtd = document.createElement('div');
+		var d1 = document.createElement('div');
+
+		qtd.className = 'postarea';
+		
+		qtd.appendChild(d1);
+    ";
+	return $html;
+}
+
+function qtrans_insertTitleInput2_pos($language){
 	global $q_config;
 	$html ="
 		var td = document.getElementById('titlediv');
-		var qtd = document.createElement('div');
-		var h = document.createElement('div');
-		var l = document.createTextNode('".__("Title", 'qtranslate')." (".$q_config['language_name'][$language].")');
-		var ti = document.createElement('input');
+        qtd.appendChild(document.createElement('p'));
+		td.parentNode.insertBefore(qtd,td);	
 		var slug = document.getElementById('edit-slug-box');
+        if(slug) {
+          qtd.appendChild(slug);
+          qtd.appendChild(document.createElement('p'));
+        }
+		";
+	return $html;
+}
+
+function qtrans_insertTitleInput2($language,$count){
+	global $q_config;
+	if($count>3) $count = 3;
+
+	$html ="
+		var td = document.getElementById('titlediv');
+		var d = document.createElement('div');
+	    var l = document.createTextNode('".__("Title", 'qtranslate')." (".$q_config['language_name'][$language].")');
+		var ti = document.createElement('input');
 		
 		ti.type = 'text';
 		ti.id = 'qtrans_title_".$language."';
 		ti.tabIndex = '1';
 		ti.value = qtrans_use('".$language."', document.getElementById('title').value);
 		ti.onchange = qtrans_integrate_title;
-		ti.className = 'qtrans_title_input2'
-		h.className = 'qtrans_title';
-		
-		qtd.className = 'postarea';
-		
-		h.appendChild(l);
-		qtd.appendChild(h);
-		qtd.appendChild(ti);
-";
+		ti.className = 'qtrans_title_input2';
+		d.className = 'qtrans_title_input2_wrap qtrans_title_input2_wrap".$count."';
 
-	$html.="
-		td.parentNode.insertBefore(qtd,td);
-		
-		";
-	//echo $html;	
+		d.appendChild(l);
+        d.appendChild(document.createElement('br'));
+		d.appendChild(ti);
+		qtd.appendChild(d);
+";
 	return $html;
 }
 
