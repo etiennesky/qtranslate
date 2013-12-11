@@ -611,7 +611,9 @@ function qtranslate_conf() {
 </div>
 <div class="wrap">
 
-<h2><?php _e('Languages', 'qtranslate') ?></h2>
+<h2><?php _e('Enabled Languages', 'qtranslate') ?><span id="qtranslate-show-lang-enable" style="display:none"> (<a name="lang_enable" href="#lang_enable" onclick="showLangEnable();"><?php _e('Show', 'qtranslate'); ?></a>)</span></h2>
+
+<div id="qtranslate-lang-enable">
 <div id="col-container">
 
 <div id="col-right">
@@ -658,6 +660,24 @@ function qtranslate_conf() {
 </div><!-- /col-left -->
 
 </div><!-- /col-container -->
+</div><!-- /qtranslate-lang-enable -->
+
+</div><!-- /wrap -->
+
+		<script type="text/javascript">
+		// <![CDATA[
+			function showLangEnable() {
+				document.getElementById('qtranslate-lang-enable').style.display='block';
+				document.getElementById('qtranslate-show-lang-enable').style.display='none';
+				return false;
+			}
+			if(location.hash!='#lang_enable') {
+					document.getElementById('qtranslate-show-lang-enable').style.display='inline';
+					document.getElementById('qtranslate-lang-enable').style.display='none';
+			}
+		// ]]>
+		</script>
+
 <?php
 }
 }
