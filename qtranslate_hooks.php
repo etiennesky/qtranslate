@@ -82,6 +82,7 @@ function qtrans_optionFilter($do='enable') {
 	}
 }
 
+/*
 function qtrans_adminHeader() {
 	echo "<style type=\"text/css\" media=\"screen\">\n";
 	echo ".qtrans_title_input { border:0pt none; font-size:1.7em; outline-color:invert; outline-style:none; outline-width:medium; padding:0pt; width:100%; }\n";
@@ -100,6 +101,13 @@ function qtrans_adminHeader() {
 	echo ".qtranslate_lang_div.active { background: #DFDFDF; border-left:1px solid #D0D0D0; border-right: 1px solid #F7F7F7; padding:6px 4px 8px 4px }";
 	do_action('qtranslate_css');
 	echo "</style>\n";
+	return qtrans_optionFilter('disable');
+}
+*/
+
+function qtrans_adminHeader() {
+	echo "<link rel='stylesheet' href='" . plugin_dir_url( __FILE__ ) . "qtranslate_admin.css' type='text/css' media='screen' />
+\n";
 	return qtrans_optionFilter('disable');
 }
 

@@ -64,7 +64,7 @@ $qs_error_messages[QS_ERROR_SERVICE_UNKNOWN] =			__('An unknown error occured wi
 $qs_error_messages[QS_DEBUG] =							__('The server returned a debugging message.','qtranslate');
 
 // hooks
-add_action('qtranslate_css',					'qs_css');
+//add_action('qtranslate_css',					'qs_css');
 add_action('qs_cron_hook',						'qs_cron');
 add_action('qtranslate_configuration',			'qs_config_hook');
 add_action('qtranslate_loadConfig',				'qs_load');
@@ -170,6 +170,7 @@ function qs_translateButtons($available_languages, $missing_languages) {
 	printf(__('<div>Translate to %s</div>', 'qtranslate') ,$missing_languages_names);
 }
 
+/*
 function qs_css() {
 ?>
 p.error {background-color:#ffebe8;border-color:#c00;border-width:1px;border-style:solid;padding:0 .6em;margin:5px 15px 2px;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
@@ -190,6 +191,7 @@ p.error a{color:#c00;}
 .qs_submit { text-align:right; padding:6px }
 <?php
 }
+*/
 
 function qs_load() {
 	global $q_config, $qs_public_key;
