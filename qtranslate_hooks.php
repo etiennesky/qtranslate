@@ -82,8 +82,8 @@ function qtrans_optionFilter($do='enable') {
 	}
 }
 
-/*
 function qtrans_adminHeader() {
+	if ( false ) { // TODO add option for this
 	echo "<style type=\"text/css\" media=\"screen\">\n";
 	echo ".qtrans_title_input { border:0pt none; font-size:1.7em; outline-color:invert; outline-style:none; outline-width:medium; padding:0pt; width:100%; }\n";
 	echo ".qtrans_title {  display:  inline-block;  width:15%;}\n";
@@ -101,13 +101,7 @@ function qtrans_adminHeader() {
 	echo ".qtranslate_lang_div.active { background: #DFDFDF; border-left:1px solid #D0D0D0; border-right: 1px solid #F7F7F7; padding:6px 4px 8px 4px }";
 	do_action('qtranslate_css');
 	echo "</style>\n";
-	return qtrans_optionFilter('disable');
-}
-*/
-
-function qtrans_adminHeader() {
-	echo "<link rel='stylesheet' href='" . plugin_dir_url( __FILE__ ) . "qtranslate_admin.css' type='text/css' media='screen' />
-\n";
+	}
 	return qtrans_optionFilter('disable');
 }
 
@@ -265,6 +259,25 @@ add_action('admin_head',					'qtrans_adminHeader');
 add_action('admin_menu',					'qtrans_adminMenu');
 add_action('wp_before_admin_bar_render',	'qtrans_fixAdminBar');
 
+function qtranslate_tinymce_callback( $mceInit ) {
+	$mceInit['onchange_callback'] = "qtrans_tiymce_onchange_callback";
+	return $mceInit;
+}
+
+function qtranslate_enqueue_scripts() {
+
+	//	wp_register_script( 'multilingual-wp-autosave-js', plugin_dir_url( __FILE__ ) . 'js/multilingual-wp-autosave.js', array( 'multilingual-wp-js', 'autosave' ), false, true );
+	//	wp_register_script( 'multilingual-wp-tax-js', plugin_dir_url( __FILE__ ) . 'js/multilingual-wp-tax.js', array( 'jquery' ), false, true );
+
+	wp_register_script( 'qtranslate-admin-js', plugin_dir_url( __FILE__ ) . 'qtranslate_admin.js', array( 'jquery', 'schedule', 'word-count' ), false, true );
+	wp_enqueue_script( 'qtranslate-admin-js' );	
+
+	wp_enqueue_style( 'multilingual-wp-css', plugin_dir_url( __FILE__ ) . 'qtranslate_admin.css' );
+
+	wp_register_script( 'jquery-blockUI-js', plugin_dir_url( __FILE__ ) . 'jquery.blockUI.js', array('jquery'));
+	wp_enqueue_script( 'jquery-blockUI-js' );	
+}
+
 // Hooks (execution time critical filters) 
 add_filter('the_content',					'qtrans_useCurrentLanguageIfNotFoundShowAvailable', 0);
 add_filter('the_excerpt',					'qtrans_useCurrentLanguageIfNotFoundShowAvailable', 0);
@@ -337,7 +350,16 @@ add_filter('comment_notification_text', 	'qtrans_useCurrentLanguageIfNotFoundUse
 add_filter('comment_notification_headers',	'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage');
 add_filter('comment_notification_subject',	'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage');
 
-add_filter('the_editor',					'qtrans_modifyRichEditor');
+if(false) {
+	add_filter('the_editor',				 'qtrans_modifyRichEditor');
+}
+else {
+	add_action( 'submitpost_box',            'qtrans_insertLangTabs', 0 );
+	add_action( 'submitpage_box',            'qtrans_insertLangTabs', 0 );
+	add_filter( 'tiny_mce_before_init',      'qtranslate_tinymce_callback' );
+}
+add_action( 'admin_enqueue_scripts', 'qtranslate_enqueue_scripts' );
+
 add_filter('admin_footer',					'qtrans_modifyExcerpt');
 add_filter('bloginfo_url',					'qtrans_convertBlogInfoURL',10,2);
 add_filter('plugin_action_links', 			'qtrans_links', 10, 2);

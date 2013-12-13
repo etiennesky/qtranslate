@@ -160,6 +160,30 @@ function qtrans_modifyRichEditor($old_content) {
 	return $content.$old_content.$content_append;
 }
 
+//adapted from insert_editors() from https://github.com/nikolov-tmw/multilingual-wp
+//replaces qtrans_modifyRichEditor
+function qtrans_insertLangTabs() {
+	global $q_config;
+	//if ( $this->is_allowed_admin_page() ) {
+	//$has_editor = post_type_supports( $this->post->post_type, 'editor' ); 
+?>
+			<div class="hide-if-js" id="mlwp-editors">
+<!--				<h2><?php _e( 'Language', 'multilingual-wp' ); ?></h2> -->
+				<h2></h2>
+				<?php 
+	$el = array_reverse(qtrans_getSortedLanguages()); // reverse because they are reversed with float:right
+	foreach($el as $lang) {
+		//$this->rel_posts[ $lang ]->post_title = $this->rel_posts[ $lang ]->post_status == 'auto-draft' && $this->rel_posts[ $lang ]->post_title == __( 'Auto Draft' ) ? '' : $this->rel_posts[ $lang ]->post_title; 
+?>
+				<div class="js-tab lang-<?php echo $lang . ( $lang == $q_config['default_language'] ? ' mlwp-deflang' : '' ); ?>" id="mlwp_tab_lang_<?php echo $lang; ?>" title="<?php echo $q_config['language_name'][$lang]; ?>" mlwp-lang="<?php echo $lang; ?>"></div>
+
+<?php
+			}
+?>
+			</div>
+<?php
+}
+
 function qtrans_modifyExcerpt() {
 	global $q_config;
 	echo "<script type=\"text/javascript\">\n// <![CDATA[\n";
