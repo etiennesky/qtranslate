@@ -360,7 +360,7 @@ else {
 }
 add_action( 'admin_enqueue_scripts', 'qtranslate_enqueue_scripts' );
 
-add_filter('admin_footer',					'qtrans_modifyExcerpt');
+//add_filter('admin_footer',					'qtrans_modifyExcerpt');
 add_filter('bloginfo_url',					'qtrans_convertBlogInfoURL',10,2);
 add_filter('plugin_action_links', 			'qtrans_links', 10, 2);
 add_filter('manage_language_columns',		'qtrans_language_columns');

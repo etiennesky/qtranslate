@@ -47,6 +47,7 @@ function qtrans_modifyTermFormFor($term) {
 	qtrans_modifyTermForm('tag-name', __('Name'), $term);
 }
 
+/*
 // Modifys TinyMCE to edit multilingual content
 function qtrans_modifyRichEditor($old_content) {
 	global $q_config;
@@ -159,6 +160,7 @@ function qtrans_modifyRichEditor($old_content) {
 	
 	return $content.$old_content.$content_append;
 }
+*/
 
 //adapted from insert_editors() from https://github.com/nikolov-tmw/multilingual-wp
 //replaces qtrans_modifyRichEditor
@@ -166,6 +168,17 @@ function qtrans_insertLangTabs() {
 	global $q_config;
 	//if ( $this->is_allowed_admin_page() ) {
 	//$has_editor = post_type_supports( $this->post->post_type, 'editor' ); 
+	// TODO add test...
+
+	echo "<script type=\"text/javascript\">\n// <![CDATA[\n";
+	echo $q_config['js']['qtrans_is_array'];
+	echo $q_config['js']['qtrans_xsplit'];
+	echo $q_config['js']['qtrans_split'];
+	echo $q_config['js']['qtrans_integrate'];
+	echo $q_config['js']['qtrans_switch_postbox'];
+	echo $q_config['js']['qtrans_use'];
+	echo "// ]]>\n</script>\n";
+
 ?>
 			<div class="hide-if-js" id="mlwp-editors">
 <!--				<h2><?php _e( 'Language', 'multilingual-wp' ); ?></h2> -->
@@ -184,6 +197,7 @@ function qtrans_insertLangTabs() {
 <?php
 }
 
+/*
 function qtrans_modifyExcerpt() {
 	global $q_config;
 	echo "<script type=\"text/javascript\">\n// <![CDATA[\n";
@@ -226,6 +240,7 @@ function qtrans_createTextArea($parent, $language, $target, $id) {
 		";
 	return $html;
 }
+*/
 
 function qtrans_insertTermInput($id,$name,$term,$language){
 	global $q_config;
@@ -332,6 +347,7 @@ function qtrans_insertTermInput2($id,$name,$term,$language){
 	return $html;
 }
 
+/*
 function qtrans_insertTitleInput($language){
 	global $q_config;
 	$html ="
@@ -436,4 +452,6 @@ function qtrans_createEditorToolbarButton($language, $id, $js_function = 'switch
 		";
 	return $html;
 }
+*/
+
 ?>

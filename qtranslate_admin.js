@@ -1,8 +1,7 @@
 
 var qtrans_current_lang = '';
-var qtrans_current_title = '';
 var qtrans_full_title = '';
-var qtrans_current_content = '';
+var qtrans_full_excerpt = '';
 var qtrans_full_content = '';
 
 // this should be inside jquery block, but did not find how to insert it there
@@ -84,11 +83,13 @@ function qtrans_tiymce_onchange_callback(e) {
 			function change_lang( lang ) {
 				if ( qtrans_current_lang == '' ) {
 					qtrans_full_title = $('#title').val();
+					qtrans_full_excerpt = $('#excerpt').val();
 					qtrans_full_content = $('#content').val();
 				}
 
 				if( lang != qtrans_current_lang ) {
 					$('#title').val(qtrans_use(lang,qtrans_full_title));
+					$('#excerpt').val(qtrans_use(lang,qtrans_full_excerpt));
 					set_editor_content(qtrans_use(lang,qtrans_full_content));
 
 					qtrans_current_lang = lang;
@@ -97,6 +98,10 @@ function qtrans_tiymce_onchange_callback(e) {
 
 			$( "#title" ).change(function() {
 				qtrans_full_title = qtrans_integrate(qtrans_current_lang,$(this).val(),qtrans_full_title);
+			});
+
+			$( "#excerpt" ).change(function() {
+				qtrans_full_excerpt = qtrans_integrate(qtrans_current_lang,$(this).val(),qtrans_full_excerpt);
 			});
 
 			// this should be only change() 
@@ -127,9 +132,10 @@ function qtrans_tiymce_onchange_callback(e) {
 			$( "#post" ).submit(function() {
 				$.blockUI();
 				$editors_cont.css( { 'visibility': 'hidden' } );
-
 				$( "#poststuff" ).css( { 'visibility': 'hidden' } );
+
 				$( "#title" ).val(qtrans_full_title);
+				$( "#excerpt" ).val(qtrans_full_excerpt);
 				set_editor_content(qtrans_full_content);
 			});
 
