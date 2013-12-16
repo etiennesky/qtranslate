@@ -180,7 +180,7 @@ function qtrans_insertLangTabs() {
 	echo "// ]]>\n</script>\n";
 
 ?>
-			<div class="hide-if-js" id="mlwp-editors">
+			<div class="hide-if-js" id="qtrans-tabs">
 <!--				<h2><?php _e( 'Language', 'multilingual-wp' ); ?></h2> -->
 				<h2></h2>
 				<?php 
@@ -188,7 +188,7 @@ function qtrans_insertLangTabs() {
 	foreach($el as $lang) {
 		//$this->rel_posts[ $lang ]->post_title = $this->rel_posts[ $lang ]->post_status == 'auto-draft' && $this->rel_posts[ $lang ]->post_title == __( 'Auto Draft' ) ? '' : $this->rel_posts[ $lang ]->post_title; 
 ?>
-				<div class="js-tab lang-<?php echo $lang . ( $lang == $q_config['default_language'] ? ' mlwp-deflang' : '' ); ?>" id="mlwp_tab_lang_<?php echo $lang; ?>" title="<?php echo $q_config['language_name'][$lang]; ?>" mlwp-lang="<?php echo $lang; ?>"></div>
+				<div class="js-tab lang-<?php echo $lang . ( $lang == $q_config['default_language'] ? ' qtrans-deflang' : '' ); ?>" id="qtrans_tab_lang_<?php echo $lang; ?>" title="<?php echo $q_config['language_name'][$lang]; ?>" qtrans-lang="<?php echo $lang; ?>"></div>
 
 <?php
 			}

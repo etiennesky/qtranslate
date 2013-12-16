@@ -13,19 +13,19 @@ function qtrans_tiymce_onchange_callback(e) {
 
 (function($){
 	$(document).ready(function(){
-		if ( $('#mlwp-editors').length ) {
-			var $editors_cont = $('#mlwp-editors').remove().prependTo( $('#post-body-content') ).css( { 'visibility': 'hidden' } ).show();
+		if ( $('#qtrans-tabs').length ) {
+			var $qtrans_tabs = $('#qtrans-tabs').remove().prependTo( $('#post-body-content') ).css( { 'visibility': 'hidden' } ).show();
 			
 			// See if the user's using the classic colorscheme or not
 			if ( $('#colors-css').length && $('#colors-css').attr('href').match(/colors-classic/i) ) {
-				$('#mlwp-editors').addClass('colors-classic');
+				$('#qtrans-tabs').addClass('colors-classic');
 			};
 
 			$(window).load(function(){
-				init_js_tabs( $editors_cont );
+				init_js_tabs( $qtrans_tabs );
 
 				$( "#poststuff" ).css( { 'visibility': 'visible' } );		
-				$editors_cont.css( { 'visibility': 'visible' } );
+				$qtrans_tabs.css( { 'visibility': 'visible' } );
 			});
 
 			function init_js_tabs( parent ) {
@@ -46,8 +46,7 @@ function qtrans_tiymce_onchange_callback(e) {
 					//nav.append("<span>&nbsp;&nbsp;</span>");
 					//for(i in tabs) {
 					for(i=0; i<tabs.length; i++) {
-						//el = '<a href="#' + tabs[i].id + '" class="button button-' + ( $('#' + tabs[i].id).hasClass('mlwp-deflang') ? 'primary' : 'secondary' ) + '">' + tabs[i].title + '</a>';
-						el = '<a href="#' + tabs[i].id + '" class="nav-tab' + ( $('#' + tabs[i].id).hasClass('mlwp-deflang') ? ' active' : '' ) + '">' + tabs[i].title + '</a>';
+						el = '<a href="#' + tabs[i].id + '" class="nav-tab' + ( $('#' + tabs[i].id).hasClass('qtrans-deflang') ? ' active' : '' ) + '">' + tabs[i].title + '</a>';
 						nav.append(el);
 					}
 					nav.append('<div class="clear" height=20></div>');
@@ -64,8 +63,8 @@ function qtrans_tiymce_onchange_callback(e) {
 						$(this).blur();
 
 						var href = th.attr("href"); 
-						if(href.indexOf("#mlwp_tab_lang_") != -1 ) {
-							var new_lang = href.substring(15);
+						if(href.indexOf("#qtrans_tab_lang_") != -1 ) {
+							var new_lang = href.substring(17);
 							if ( new_lang != '' ) {
 								change_lang(new_lang);
 							}
@@ -133,7 +132,7 @@ function qtrans_tiymce_onchange_callback(e) {
 			// todo category, tag, link cat., editor
 			$( "#post" ).submit(function() {
 				$.blockUI();
-				$editors_cont.css( { 'visibility': 'hidden' } );
+				$qtrans_tabs.css( { 'visibility': 'hidden' } );
 				$( "#poststuff" ).css( { 'visibility': 'hidden' } );
 
 				$( "#title" ).val(qtrans_full_title);
