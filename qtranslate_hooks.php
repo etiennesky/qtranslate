@@ -265,17 +265,17 @@ function qtranslate_tinymce_callback( $mceInit ) {
 }
 
 function qtranslate_enqueue_scripts() {
-
-	//	wp_register_script( 'multilingual-wp-autosave-js', plugin_dir_url( __FILE__ ) . 'js/multilingual-wp-autosave.js', array( 'multilingual-wp-js', 'autosave' ), false, true );
-	//	wp_register_script( 'multilingual-wp-tax-js', plugin_dir_url( __FILE__ ) . 'js/multilingual-wp-tax.js', array( 'jquery' ), false, true );
-
-	wp_register_script( 'qtranslate-admin-js', plugin_dir_url( __FILE__ ) . 'qtranslate_admin.js', array( 'jquery', 'schedule', 'word-count' ), false, true );
+	wp_register_script( 'qtranslate-admin-js', plugin_dir_url( __FILE__ ) . 'qtranslate_admin.js', array( 'jquery', 'word-count' ), false, true );
 	wp_enqueue_script( 'qtranslate-admin-js' );	
 
 	wp_enqueue_style( 'multilingual-wp-css', plugin_dir_url( __FILE__ ) . 'qtranslate_admin.css' );
 
 	wp_register_script( 'jquery-blockUI-js', plugin_dir_url( __FILE__ ) . 'jquery.blockUI.js', array('jquery'));
 	wp_enqueue_script( 'jquery-blockUI-js' );	
+}
+
+function disableautosave() {
+  wp_deregister_script('autosave');
 }
 
 // Hooks (execution time critical filters) 
@@ -350,16 +350,13 @@ add_filter('comment_notification_text', 	'qtrans_useCurrentLanguageIfNotFoundUse
 add_filter('comment_notification_headers',	'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage');
 add_filter('comment_notification_subject',	'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage');
 
-if(false) {
-	add_filter('the_editor',				 'qtrans_modifyRichEditor');
-}
-else {
-	add_action( 'submitpost_box',            'qtrans_insertLangTabs', 0 );
-	add_action( 'submitpage_box',            'qtrans_insertLangTabs', 0 );
-	add_filter( 'tiny_mce_before_init',      'qtranslate_tinymce_callback' );
-}
-add_action( 'admin_enqueue_scripts', 'qtranslate_enqueue_scripts' );
+add_action( 'submitpost_box',               'qtrans_insertLangTabs', 0 );
+add_action( 'submitpage_box',               'qtrans_insertLangTabs', 0 );
+add_filter( 'tiny_mce_before_init',         'qtranslate_tinymce_callback' );
+add_action( 'admin_enqueue_scripts',        'qtranslate_enqueue_scripts' );
+add_action( 'wp_print_scripts',             'disableautosave' );
 
+//add_filter('the_editor',                                 'qtrans_modifyRichEditor');
 //add_filter('admin_footer',					'qtrans_modifyExcerpt');
 add_filter('bloginfo_url',					'qtrans_convertBlogInfoURL',10,2);
 add_filter('plugin_action_links', 			'qtrans_links', 10, 2);
