@@ -132,6 +132,7 @@ function qtrans_tiymce_onchange_callback(e) {
 			// todo category, tag, link cat., editor
 			$( "#post" ).submit(function() {
 				$.blockUI();
+				$( "#message" ).css( { 'visibility': 'hidden' } );
 				$qtrans_tabs.css( { 'visibility': 'hidden' } );
 				$( "#poststuff" ).css( { 'visibility': 'hidden' } );
 
