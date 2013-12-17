@@ -54,6 +54,7 @@ function qtrans_initJS() {
 
 	$q_config['js']['qtrans_split'] = "
 		qtrans_split = function(text) {
+            if(text==undefined) return ''; // this needed for pages?
 			var split_regex = /(<!--.*?-->)/gi;
 			var lang_begin_regex = /<!--:([a-z]{2})-->/gi;
 			var lang_end_regex = /<!--:-->/gi;
