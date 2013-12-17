@@ -254,11 +254,15 @@ add_action('category_add_form',				'qtrans_modifyTermFormFor');
 add_action('post_tag_add_form',				'qtrans_modifyTermFormFor');
 add_action('link_category_add_form',		'qtrans_modifyTermFormFor');
 add_action('widgets_init',					'qtrans_widget_init'); 
-add_action('plugins_loaded',				'qtrans_init', 2); 
+add_action('plugins_loaded',				'qtrans_init', 2);
+ 
+if(is_admin()){
 add_action('admin_head',					'qtrans_adminHeader');
 //add_action('admin_menu',					'qtrans_adminMenu');
-add_action('admin_bar_menu',				'qtrans_adminBarMenu',9999);
+add_action('admin_menu',					'qtrans_adminMenuConf');
 add_action('wp_before_admin_bar_render',	'qtrans_fixAdminBar');
+}
+add_action('admin_bar_menu',				'qtrans_adminBarMenu',9999);
 
 function qtranslate_tinymce_callback( $mceInit ) {
 	$mceInit['onchange_callback'] = "qtrans_tiymce_onchange_callback";

@@ -43,11 +43,13 @@ function qtrans_adminMenu() {
 	}
 }
 
-function qtrans_adminBarMenu( $wp_admin_bar ) {
-	global $menu, $submenu, $q_config;
-	
+function qtrans_adminMenuConf( $wp_admin_bar ) {
 	/* Configuration Page */
 	add_options_page(__('Language Management', 'qtranslate'), __('Languages', 'qtranslate'), 'manage_options', 'qtranslate', 'qtranslate_conf');
+}
+
+function qtrans_adminBarMenu( $wp_admin_bar ) {
+	global $menu, $submenu, $q_config;
 	
 	/* Language Switcher for Admin */
 	
