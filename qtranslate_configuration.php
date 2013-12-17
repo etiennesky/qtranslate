@@ -28,7 +28,7 @@ function qtrans_adminMenu() {
 	
 	// don't display menu if there is only 1 language active
 	if(sizeof($q_config['enabled_languages']) <= 1) return;
-	
+
 	// generate menu with flags for every enabled language
 	foreach($q_config['enabled_languages'] as $id => $language) {
 		$link = add_query_arg('lang', $language);
@@ -39,7 +39,41 @@ function qtrans_adminMenu() {
 			else
 				$link = 'edit.php?lang='.$language;
 		}
-		add_menu_page(__($q_config['language_name'][$language], 'qtranslate'), __($q_config['language_name'][$language], 'qtranslate'), 'read', $link, NULL, trailingslashit(WP_CONTENT_URL).$q_config['flag_location'].$q_config['flag'][$language]);
+	    add_menu_page(__($q_config['language_name'][$language], 'qtranslate'), __($q_config['language_name'][$language], 'qtranslate'), 'read', $link, NULL, trailingslashit(WP_CONTENT_URL).$q_config['flag_location'].$q_config['flag'][$language]);
+	}
+}
+
+function qtrans_adminBarMenu( $wp_admin_bar ) {
+	global $menu, $submenu, $q_config;
+	
+	/* Configuration Page */
+	add_options_page(__('Language Management', 'qtranslate'), __('Languages', 'qtranslate'), 'manage_options', 'qtranslate', 'qtranslate_conf');
+	
+	/* Language Switcher for Admin */
+	
+	// don't display menu if there is only 1 language active
+	if(sizeof($q_config['enabled_languages']) <= 1) return;
+
+	// generate menu with flags for every enabled language
+	// reverse so they appear in right order
+	foreach(array_reverse($q_config['enabled_languages']) as $id => $language) {
+		$link = add_query_arg('lang', $language);
+		$link = (strpos($link, "wp-admin/") === false) ? preg_replace('#[^?&]*/#i', '', $link) : preg_replace('#[^?&]*wp-admin/#i', '', $link);
+		if(strpos($link, "?")===0||strpos($link, "index.php?")===0) {
+			if(current_user_can('manage_options')) 
+				$link = 'options-general.php?page=qtranslate&godashboard=1&lang='.$language; 
+			else
+				$link = 'edit.php?lang='.$language;
+		}
+
+		$args = array(
+					  'id'    => 'lang_'.$language,
+					  'title' => '<img src="'.trailingslashit(WP_CONTENT_URL).$q_config['flag_location'].$q_config['flag'][$language].'" style="vertical-align:middle;margin-right:5px" alt="'.$language.'" title="'.$language.'" />',
+					  'href'  => $link,
+					  'parent'=> 'top-secondary',
+					  'meta'  => array( 'class' => 'my-toolbar-page' )
+					  );
+		$wp_admin_bar->add_node( $args );
 	}
 }
 
