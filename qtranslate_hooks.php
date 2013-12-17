@@ -356,11 +356,14 @@ add_filter('comment_notification_text', 	'qtrans_useCurrentLanguageIfNotFoundUse
 add_filter('comment_notification_headers',	'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage');
 add_filter('comment_notification_subject',	'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage');
 
+global $pagenow;
+if(is_admin() && ($pagenow=="post.php" || $pagenow=="post-new.php") ) {
 add_action( 'submitpost_box',               'qtrans_insertLangTabs', 0 );
 add_action( 'submitpage_box',               'qtrans_insertLangTabs', 0 );
 add_filter( 'tiny_mce_before_init',         'qtranslate_tinymce_callback' );
 add_action( 'admin_enqueue_scripts',        'qtranslate_enqueue_scripts' );
 add_action( 'wp_print_scripts',             'disableautosave' );
+}
 
 //add_filter('the_editor',                                 'qtrans_modifyRichEditor');
 //add_filter('admin_footer',					'qtrans_modifyExcerpt');
