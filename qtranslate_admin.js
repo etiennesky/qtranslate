@@ -5,10 +5,20 @@ var qtrans_full_excerpt = '';
 var qtrans_full_content = '';
 
 // this should be inside jquery block, but did not find how to insert it there
-function qtrans_tiymce_onchange_callback(e) {
-	if (tinyMCE.activeEditor.isDirty()) {
+
+//function qtrans_tiymce_onchange_callback(e) {
+//	if (tinyMCE.activeEditor.isDirty()) {
+//		qtrans_full_content = qtrans_integrate(qtrans_current_lang,tinyMCE.activeEditor.getContent(),qtrans_full_content);
+//    }
+//}
+
+function qtrans_tiymce_setup(editor) {
+    editor.on('blur', function(e) {
+	if (editor.isDirty()) {
 		qtrans_full_content = qtrans_integrate(qtrans_current_lang,tinyMCE.activeEditor.getContent(),qtrans_full_content);
-    }
+	}
+    });
+
 }
 
 (function($){
@@ -84,6 +94,7 @@ function qtrans_tiymce_onchange_callback(e) {
 					qtrans_full_title = $('#title').val();
 					qtrans_full_excerpt = $('#excerpt').val();
 					qtrans_full_content = $('#content').val();
+				        //qtrans_full_content = get_editor_content();
 				}
 
 				if( lang != qtrans_current_lang ) {
@@ -120,6 +131,7 @@ function qtrans_tiymce_onchange_callback(e) {
 
 			function set_editor_content(content){
 				if (jQuery("#wp-content-wrap").hasClass("tmce-active")){
+//			    if (jQuery("#wp-content-wrap").hasClass("tmce-active") && tinyMCE.activeEditor != null){
 					tinyMCE.activeEditor.setContent(content);
 				}else{
 					jQuery('#content').val(content);

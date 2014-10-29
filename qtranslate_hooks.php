@@ -265,7 +265,8 @@ add_action('wp_before_admin_bar_render',	'qtrans_fixAdminBar');
 add_action('admin_bar_menu',				'qtrans_adminBarMenu',9999);
 
 function qtranslate_tinymce_callback( $mceInit ) {
-	$mceInit['onchange_callback'] = "qtrans_tiymce_onchange_callback";
+//	$mceInit['onchange_callback'] = "qtrans_tiymce_onchange_callback";
+	$mceInit['setup'] = "qtrans_tiymce_setup";
 	return $mceInit;
 }
 
