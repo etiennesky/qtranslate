@@ -468,7 +468,8 @@ function qtrans_strftime($format, $date, $default = '', $before = '', $after = '
 	$search[] = '/(([^%])%3|^%3)/'; $replace[] = '${2}'.date('r',$date); // date r
 	$search[] = '/(([^%])%4|^%4)/'; $replace[] = '${2}'.$date; // date U
 	$format = preg_replace($search,$replace,$format);
-	return $before.strftime($format, $date).$after;
+//	return $before.strftime($format, $date).$after;
+	return strftime($format, $date).$after;
 }
 
 function qtrans_dateFromPostForCurrentLanguage($old_date, $format ='', $before = '', $after = '') {
