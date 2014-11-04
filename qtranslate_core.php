@@ -803,14 +803,16 @@ function qtrans_use($lang, $text, $show_available=false) {
 		return $content[$lang];
 	}
 
-	// content not available in requested language (bad!!) what now?
+       // content not available in requested language (bad!!) what now?
 	// if post is available in default language, show it
+$tmp_text .= " bla1 ";
 	if( $q_config['show_default_lang_content'] && in_array($q_config['default_language'], $available_languages)) {
 		$tmp_text = "";
 		if ( $show_available ) {
 			$tmp_text .= "<p>" . preg_replace('/%LANG:([^:]*):([^%]*)%/', qtrans_buildLanguageList($lang,$language,$available_languages), $q_config['not_available'][$lang]);
-			if ( count($available_languages) > 1 )
-				$tmp_text .= "<br>(shown in " . $q_config['language_name'][$q_config['default_language']] . ")";
+//			if ( count($available_languages) > 1 )
+//				$tmp_text .= "<br>(shown in " . $q_config['language_name'][$q_config			if ( count($available_languages) >= 1 )
+		$tmp_text .= " ( " . $q_config['language_name'][$q_config['default_language']] . " text shown )";
 			    // TODO translate this
 			$tmp_text .= "</p>" ;
 		}
