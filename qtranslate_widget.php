@@ -95,7 +95,7 @@ function qtrans_generateLanguageSelectCode($style='', $id='', $show_inline=false
 		case 'text':
 		case 'dropdown':
 			if ( ! $show_inline=='on') $html .= '<ul class="qtrans_language_chooser" id="'.$id.'">';
-			else $html .= '<div class="qtrans_language_chooser" id="'.$id.'">';
+			else $html .= '&nbsp;<div class="qtrans_language_chooser" id="'.$id.'">';
 			foreach(qtrans_getSortedLanguages() as $language) {
 				$classes = array('lang-'.$language);
 				if($language == $q_config['language'])
@@ -115,6 +115,7 @@ function qtrans_generateLanguageSelectCode($style='', $id='', $show_inline=false
 				else $html .= '</div>';
 			}
 			if ( ! $show_inline=='on') $html .= "</ul>";
+			else $html .= '</div>';
 			$html .= "<div class=\"qtrans_widget_end\"></div>";
 			if($style=='dropdown') {
 				$html .= "<script type=\"text/javascript\">\n// <![CDATA[\r\n";
@@ -142,7 +143,7 @@ function qtrans_generateLanguageSelectCode($style='', $id='', $show_inline=false
 				$html .= ' class="qtrans_flag_'.$language.' qtrans_flag_and_text" title="'.$q_config['language_name'][$language].'"';
 				$html .= '><span>'.$q_config['language_name'][$language].'</span></a></li>';
 			}
-			$html .= "</ul><div class=\"qtrans_widget_end\"></div>";
+			$html .= "</ul><div class=\"qtrans_widget_end\"></div>\n";
 			break;
 	}
 
