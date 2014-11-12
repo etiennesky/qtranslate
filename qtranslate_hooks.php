@@ -115,6 +115,19 @@ function qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($content) {
 	return qtrans_use($q_config['language'], $content, false);
 }
 
+// these functions are to allow to see posts in other language without changing lang pref (used in cookies mode)
+function qtrans_useCurrentLanguageIfNotFoundShowAvailable2($content) {
+	global $q_config;
+	$lang=isset($q_config['postlanguage']) ? $q_config['postlanguage'] : $q_config['language'];
+	return qtrans_use( $lang, $content, true);
+}
+
+function qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage2($content) {
+	global $q_config;
+	$lang=isset($q_config['postlanguage']) ? $q_config['postlanguage'] : $q_config['language'];
+	return qtrans_use( $lang, $content, false);
+}
+
 function qtrans_useDefaultLanguage($content) {
 	global $q_config;
 	return qtrans_use($q_config['default_language'], $content, false);
@@ -145,8 +158,8 @@ function qtrans_excludePages($pages) {
 function qtrans_postsFilter($posts) {
 	if(is_array($posts)) {
 		foreach($posts as $post) {
-			$post->post_content = qtrans_useCurrentLanguageIfNotFoundShowAvailable($post->post_content);
-			$post = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($post);
+			$post->post_content = qtrans_useCurrentLanguageIfNotFoundShowAvailable2($post->post_content);
+			$post = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage2($post);
 		}
 	}
 	return $posts;

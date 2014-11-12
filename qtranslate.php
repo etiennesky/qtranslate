@@ -96,6 +96,7 @@ define('QT_LANGUAGE',	5);
 define('QT_URL_QUERY',	1);
 define('QT_URL_PATH',	2);
 define('QT_URL_DOMAIN',	3);
+define('QT_URL_COOKIE', 4);
 define('QT_STRFTIME_OVERRIDE',	1);
 define('QT_DATE_OVERRIDE',		2);
 define('QT_DATE',				3);

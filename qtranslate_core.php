@@ -72,15 +72,22 @@ function qtrans_init() {
 	// set test cookie
 	setcookie('qtrans_cookie_test', 'qTranslate Cookie Test', 0, $q_config['url_info']['home'], $q_config['url_info']['host']);
 	// check cookies for admin
-	if(defined('WP_ADMIN')) {
-		if(isset($_GET['lang']) && qtrans_isEnabled($_GET['lang'])) {
-			$q_config['language'] = $q_config['url_info']['language'];
-			setcookie('qtrans_admin_language', $q_config['language'], time()+60*60*24*30);
-		} elseif(isset($_COOKIE['qtrans_admin_language']) && qtrans_isEnabled($_COOKIE['qtrans_admin_language'])) {
-			$q_config['language'] = $_COOKIE['qtrans_admin_language'];
+	if(defined('WP_ADMIN') || $q_config['url_mode']==QT_URL_COOKIE) {
+		if(isset($_COOKIE['qtrans_language']) && qtrans_isEnabled($_COOKIE['qtrans_language'])) {
+			$q_config['language'] = $_COOKIE['qtrans_language'];
 		} else {
 			$q_config['language'] = $q_config['default_language'];
 		}
+		if(isset($_GET['lang']) && qtrans_isEnabled($_GET['lang'])) {
+			if (isset($_GET['newlang'])) {
+			  $q_config['language'] = $q_config['url_info']['language'];
+			  setcookie('qtrans_language', $q_config['language'], time()+60*60*24*30, '/');
+			}
+			else {
+			  // add postlanguage to see post in other language without changing lang pref
+			  $q_config['postlanguage'] = $q_config['url_info']['language'];			  
+			}
+		} 
 	} else {
 		$q_config['language'] = $q_config['url_info']['language'];
 	}
@@ -537,9 +544,9 @@ function qtrans_convertBlogInfoURL($url, $what) {
 	return qtrans_convertURL($url);
 }
 
-function qtrans_convertURL($url='', $lang='', $forceadmin = false) {
+function qtrans_convertURL($url='', $lang='', $forceadmin = false, $forcequery = false) {
 	global $q_config;
-	
+
 	// invalid language
 	if($url=='') $url = esc_url($q_config['url_info']['url']);
 	if($lang=='') $lang = $q_config['language'];
@@ -584,6 +591,10 @@ function qtrans_convertURL($url='', $lang='', $forceadmin = false) {
 		$url = preg_replace("#(&|\?)lang=".$match[2]."&?#i","$1",$url);
 	}
 	
+	// remove newlang=1 string
+	$url = str_replace("?newlang=1","?",$url);
+	$url = str_replace("&newlang=1","",$url);
+
 	// remove any slashes out front
 	$url = ltrim($url,"/");
 	
@@ -619,7 +630,9 @@ function qtrans_convertURL($url='', $lang='', $forceadmin = false) {
 		case QT_URL_DOMAIN:	// pre domain 
 			if(!$q_config['hide_default_language']||$lang!=$q_config['default_language']) $home = preg_replace("#//#","//".$lang.".",$home,1);
 			break;
-		default: // query
+		default:
+		  if( $forcequery || ($q_config['url_mode'] == QT_URL_QUERY) ) {
+
 			if(!$q_config['hide_default_language']||$lang!=$q_config['default_language']){
 				if(strpos($url,'?')===false) {
 					$url .= '?';
@@ -628,6 +641,8 @@ function qtrans_convertURL($url='', $lang='', $forceadmin = false) {
 				}
 				$url .= "lang=".$lang;
 			}
+			break;
+		  }
 	}
 	
 	// see if cookies are activated
@@ -848,7 +863,9 @@ function qtrans_buildLanguageList($lang,$language,$available_languages) {
 		foreach($available_languages as $language) {
 			if($i==1) $language_list  = $end_seperator.$language_list;
 			if($i>1) $language_list  = $normal_seperator.$language_list;
-			$language_list = "<a href=\"".qtrans_convertURL('', $language)."\">".$q_config['language_name'][$language]."</a>".$language_list;
+			//allow to temporarily see post without changing language even if in cookies mode
+			// TODO test other modes...
+			$language_list = "<a href=\"".qtrans_convertURL('', $language, false, true)."\">".$q_config['language_name'][$language]."</a>".$language_list;
 			$i++;
 		}
 	}

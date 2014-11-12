@@ -39,6 +39,7 @@ function qtrans_adminMenu() {
 			else
 				$link = 'edit.php?lang='.$language;
 		}
+		$link .= '&newlang=1';
 	    add_menu_page(__($q_config['language_name'][$language], 'qtranslate'), __($q_config['language_name'][$language], 'qtranslate'), 'read', $link, NULL, trailingslashit(WP_CONTENT_URL).$q_config['flag_location'].$q_config['flag'][$language]);
 	}
 }
@@ -67,6 +68,7 @@ function qtrans_adminBarMenu( $wp_admin_bar ) {
 			else
 				$link = 'edit.php?lang='.$language;
 		}
+		$link .= '&newlang=1';
 
 		$args = array(
 					  'id'    => 'lang_'.$language,
@@ -538,10 +540,11 @@ function qtranslate_conf() {
 				<td>
 					<fieldset><legend class="hidden"><?php _e('URL Modification Mode', 'qtranslate') ?></legend>
 						<label title="Query Mode"><input type="radio" name="url_mode" value="<?php echo QT_URL_QUERY; ?>" <?php echo ($q_config['url_mode']==QT_URL_QUERY)?"checked=\"checked\"":""; ?> /> <?php _e('Use Query Mode (?lang=en)', 'qtranslate'); ?></label><br />
+						<label title="Cookie Mode"><input type="radio" name="url_mode" value="<?php echo QT_URL_COOKIE; ?>" <?php echo ($q_config['url_mode']==QT_URL_COOKIE)?"checked=\"checked\"":""; ?> /> <?php _e('Use Cookie mode (does not modify URL)', 'qtranslate'); ?></label><br />
 						<label title="Pre-Path Mode"><input type="radio" name="url_mode" value="<?php echo QT_URL_PATH; ?>" <?php echo ($q_config['url_mode']==QT_URL_PATH)?"checked=\"checked\"":""; ?> /> <?php _e('Use Pre-Path Mode (Default, puts /en/ in front of URL)', 'qtranslate'); ?></label><br />
 						<label title="Pre-Domain Mode"><input type="radio" name="url_mode" value="<?php echo QT_URL_DOMAIN; ?>" <?php echo ($q_config['url_mode']==QT_URL_DOMAIN)?"checked=\"checked\"":""; ?> /> <?php _e('Use Pre-Domain Mode (uses http://en.yoursite.com)', 'qtranslate'); ?></label><br />
 					</fieldset><br/>
-					<?php _e('Pre-Path and Pre-Domain mode will only work with mod_rewrite/pretty permalinks. Additional Configuration is needed for Pre-Domain mode!', 'qtranslate'); ?><br/>
+					<?php _e('Pre-Path and Pre-Domain mode will only work with mod_rewrite/pretty permalinks. Additional Configuration is needed for Pre-Domain mode!', 'qtranslate'); ?><br/><br/>
 					<label for="hide_default_language"><input type="checkbox" name="hide_default_language" id="hide_default_language" value="1"<?php echo ($q_config['hide_default_language'])?' checked="checked"':''; ?>/> <?php _e('Hide URL language information for default language.', 'qtranslate'); ?></label>
 				</td>
 			</tr>
