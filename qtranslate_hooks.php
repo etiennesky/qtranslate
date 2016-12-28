@@ -37,10 +37,14 @@ function qtrans_header(){
 	echo apply_filters('qtranslate_header_css',$css);
 	// skip the rest if 404
 	if(is_404()) return;
+	// add canonical link
+	$tmpurl=qtrans_convertURL('', $q_config['language'], true, true);
+	echo '<link rel="canonical" href="'.$tmpurl.'">'."\n";
+	echo '<meta property="og:url" content="'.$tmpurl.'" />'."\n";
 	// set links to translations of current page
 	foreach($q_config['enabled_languages'] as $language) {
-		if($language != qtrans_getLanguage())
-			echo '<link hreflang="'.$language.'" href="'.qtrans_convertURL('',$language).'" rel="alternate" />'."\n";
+		if($language != $tmplang)
+			echo '<link hreflang="'.$language.'" href="'.qtrans_convertURL('',$language, false, true).'" rel="alternate" />'."\n";
 	}	
 }
 
@@ -297,6 +301,102 @@ function disableautosave() {
   wp_deregister_script('autosave');
 }
 
+
+// http://aaronrussell.co.uk/legacy/improving-wordpress-the_excerpt/
+//http://bacsoftwareconsulting.com/blog/index.php/wordpress-cat/how-to-preserve-html-tags-in-wordpress-excerpt-without-a-plugin/
+// https://wordpress.org/support/topic/how-to-show-links-in-excerpt
+
+function wp_trim_excerpt2($text = '') {
+	$raw_excerpt = $text;
+	if ( '' == $text ) {
+		$text = get_the_content('');
+
+		$text = strip_shortcodes( $text );
+
+		/** This filter is documented in wp-includes/post-template.php */
+		$text = apply_filters( 'the_content', $text );
+		$text = str_replace(']]>', ']]&gt;', $text);
+
+		/**
+		 * Filter the number of words in an excerpt.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param int $number The number of words. Default 55.
+		 */
+		$excerpt_length = apply_filters( 'excerpt_length', 55 );
+		/**
+		 * Filter the string in the "more" link displayed after a trimmed excerpt.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param string $more_string The string shown within the more link.
+		 */
+		$excerpt_more = apply_filters( 'excerpt_more', ' ' . '[&hellip;]' );
+		$text = wp_trim_words2( $text, $excerpt_length, $excerpt_more );
+	}
+	/**
+	 * Filter the trimmed excerpt string.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $text        The trimmed text.
+	 * @param string $raw_excerpt The text prior to trimming.
+	 */
+	return apply_filters( 'wp_trim_excerpt', $text, $raw_excerpt );
+}
+
+function wp_trim_words2( $text, $num_words = 55, $more = null ) {
+	if ( null === $more )
+		$more = __( '&hellip;' );
+	$original_text = $text;
+//	$text = wp_strip_all_tags( $text );
+$allowed_tags = '<p>,<a>,<em>,<strong>'; 
+$text = strip_tags($text, $allowed_tags);
+	/* translators: If your word count is based on single characters (East Asian characters),
+	   enter 'characters'. Otherwise, enter 'words'. Do not translate into your own language. */
+	if ( 'characters' == _x( 'words', 'word count: words or characters?' ) && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
+		$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $text ), ' ' );
+		preg_match_all( '/./u', $text, $words_array );
+		$words_array = array_slice( $words_array[0], 0, $num_words + 1 );
+		$sep = '';
+	} else {
+		$words_array = preg_split( "/[\n\r\t ]+/", $text, $num_words + 1, PREG_SPLIT_NO_EMPTY );
+		$sep = ' ';
+	}
+	if ( count( $words_array ) > $num_words ) {
+		array_pop( $words_array );
+		$text = implode( $sep, $words_array );
+		$text = $text . $more;
+	} else {
+		$text = implode( $sep, $words_array );
+	}
+	/**
+	 * Filter the text content after words have been trimmed.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param string $text          The trimmed text.
+	 * @param int    $num_words     The number of words to trim the text to. Default 5.
+	 * @param string $more          An optional string to append to the end of the trimmed text, e.g. &hellip;.
+	 * @param string $original_text The text before it was trimmed.
+	 */
+	return apply_filters( 'wp_trim_words', $text, $num_words, $more, $original_text );
+}
+
+//remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
+//add_filter( 'get_the_excerpt', 'wp_trim_excerpt2' );
+
+
+// hook to filter social plugin url
+function filter_social_permalink($url) {
+	 return qtrans_convertURL($url, '', false, true);
+}
+add_filter( 'get_social_permalink', 'filter_social_permalink' );
+
+// remove canonical
+remove_action('wp_head', 'rel_canonical');
+
 // Hooks (execution time critical filters) 
 add_filter('the_content',					'qtrans_useCurrentLanguageIfNotFoundShowAvailable', 0);
 add_filter('the_excerpt',					'qtrans_useCurrentLanguageIfNotFoundShowAvailable', 0);
@@ -348,6 +448,10 @@ add_filter('author_feed_link',				'qtrans_convertURL');
 add_filter('day_link',						'qtrans_convertURL');
 add_filter('get_comment_author_url_link',	'qtrans_convertURL');
 add_filter('month_link',					'qtrans_convertURL');
+function qtrans_convertURL2($url='', $lang='') {
+	 return qtrans_convertURL($url, $lang, false, true);
+}
+add_filter('the_permalink',					'qtrans_convertURL');
 add_filter('page_link',						'qtrans_convertURL');
 add_filter('post_link',						'qtrans_convertURL');
 add_filter('year_link',						'qtrans_convertURL');
@@ -355,7 +459,6 @@ add_filter('category_feed_link',			'qtrans_convertURL');
 add_filter('category_link',					'qtrans_convertURL');
 add_filter('tag_link',						'qtrans_convertURL');
 add_filter('term_link',						'qtrans_convertURL');
-add_filter('the_permalink',					'qtrans_convertURL');
 add_filter('feed_link',						'qtrans_convertURL');
 add_filter('post_comments_feed_link',		'qtrans_convertURL');
 add_filter('tag_feed_link',					'qtrans_convertURL');
@@ -413,6 +516,10 @@ if(!defined('WP_ADMIN')) {
 	add_filter('get_category',				'qtrans_useTermLib',0);
 	add_filter('get_comment_author',		'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage',0);
 	add_filter('the_author',				'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage',0);
+
+
+
 }
+
 
 ?>

@@ -70,7 +70,7 @@ class qTranslateWidget extends WP_Widget {
 	}
 }
 
-function qtrans_convertURL2($url='', $lang='') {
+function qtrans_convertURL3($url='', $lang='') {
 	global $q_config;
 	if(strpos($url,'?')===false) {
 		$url .= '?';
@@ -102,7 +102,7 @@ function qtrans_generateLanguageSelectCode($style='', $id='', $show_inline=false
 					$classes[] = 'active';
 				if ( ! $show_inline=='on') $html .= '<li class="'. implode(' ', $classes) .'">';
 				else $html .= '<div style="display: block; width: auto; float: left; padding-right: 20px;" class="'. implode(' ', $classes) .'">';
-				$html .= '<a href="'.qtrans_convertURL2($url, $language).'"';
+				$html .= '<a href="'.qtrans_convertURL3($url, $language).'"';
 				// set hreflang
 				$html .= ' hreflang="'.$language.'" title="'.$q_config['language_name'][$language].'"';
 				if($style=='image')
@@ -125,7 +125,7 @@ function qtrans_generateLanguageSelectCode($style='', $id='', $show_inline=false
 				$html .= "lc.parentNode.insertBefore(s,lc);";
 				// create dropdown fields for each language
 				foreach(qtrans_getSortedLanguages() as $language) {
-					$html .= qtrans_insertDropDownElement($language, qtrans_convertURL2($url, $language), $id);
+					$html .= qtrans_insertDropDownElement($language, qtrans_convertURL3($url, $language), $id);
 				}
 				// hide html language chooser text
 				$html .= "s.onchange = function() { document.location.href = this.value;}\n";
@@ -139,7 +139,7 @@ function qtrans_generateLanguageSelectCode($style='', $id='', $show_inline=false
 				$html .= '<li';
 				if($language == $q_config['language'])
 					$html .= ' class="active"';
-				$html .= '><a href="'.qtrans_convertURL2($url, $language).'"';
+				$html .= '><a href="'.qtrans_convertURL3($url, $language).'"';
 				$html .= ' class="qtrans_flag_'.$language.' qtrans_flag_and_text" title="'.$q_config['language_name'][$language].'"';
 				$html .= '><span>'.$q_config['language_name'][$language].'</span></a></li>';
 			}

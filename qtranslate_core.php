@@ -72,28 +72,48 @@ function qtrans_init() {
 	// set test cookie
 	setcookie('qtrans_cookie_test', 'qTranslate Cookie Test', 0, $q_config['url_info']['home'], $q_config['url_info']['host']);
 	// check cookies for admin
+//echo "/bla ";print_r($_GET);
+//echo "/bla ";
 	if(defined('WP_ADMIN') || $q_config['url_mode']==QT_URL_COOKIE) {
+//echo "/ testing cookie ";
 		if(isset($_COOKIE['qtrans_language']) && qtrans_isEnabled($_COOKIE['qtrans_language'])) {
 			$q_config['language'] = $_COOKIE['qtrans_language'];
+//echo " / using lang set by cookie ";
 		} else {
+//echo " / using default lang ";
 			$q_config['language'] = $q_config['default_language'];
 		}
 		if(isset($_GET['lang']) && qtrans_isEnabled($_GET['lang'])) {
-			if (isset($_GET['newlang'])) {
+//echo " / got lang param ";
+//echo "server:";print_r($_SERVER);
+			if(strstr($_SERVER['HTTP_USER_AGENT'],'facebookexternalhit') ||
+			  strstr($_SERVER['HTTP_USER_AGENT'],'Facebot')){
+			  // process here for Facebook
+//echo "FB!!";
+			  $q_config['language'] = $q_config['url_info']['language'];
+			  $q_config['facebot'] = true;
+			}
+			else if (isset($_GET['newlang'])) {
+//echo " / setting newlang ";
 			  $q_config['language'] = $q_config['url_info']['language'];
 			  setcookie('qtrans_language', $q_config['language'], time()+60*60*24*30, '/');
 			}
 			else {
+//echo " / using temp post lang ".$q_config['url_info']['language'];;
 			  // add postlanguage to see post in other language without changing lang pref
 			  $q_config['postlanguage'] = $q_config['url_info']['language'];			  
 			}
 		} 
 	} else {
 		$q_config['language'] = $q_config['url_info']['language'];
+//echo "/ using url language ";
 	}
 	
+//echo "/ lang= ".$q_config['language'];
 	$q_config['language'] = apply_filters('qtranslate_language', $q_config['language']);
-	
+//echo "/ lang= ".$q_config['language'];
+
+//print_r($q_config	);
 	// detect language and forward if needed
 	if($q_config['detect_browser_language'] && $q_config['url_info']['redirect'] && !isset($_COOKIE['qtrans_cookie_test']) && $q_config['url_info']['language'] == $q_config['default_language']) {
 		$target = false;
@@ -818,13 +838,25 @@ function qtrans_use($lang, $text, $show_available=false) {
 		return $content[$lang];
 	}
 
+	// if content is only available in one language, display it
+	if ( $show_available && count($available_languages) == 1 && $q_config['show_single_lang_content'] ) {
+		//$tmp_text = "<p>".preg_replace('/%LANG:([^:]*):([^%]*)%/', $language_list, $q_config['not_available'][$lang]);
+		$tmp_text = "<div class=notranslate>".preg_replace('/%LANG:([^:]*):([^%]*)%/', $q_config['language_name'][$available_languages[0]], $q_config['not_available'][$lang]);
+		//$tmp_text .= "<br>( " . $q_config['language_name'][$available_languages[0]] . " text shown )";
+		//TODO add this to defult language also, but it is perhaps not needed?
+		$tmp_text .= "<br>An automatic translation is available:";
+		$tmp_text .= do_shortcode('[google-translator lang="'.$available_languages[0].'"]');
+		$tmp_text .= "</div><p>".qtrans_use($available_languages[0], $text, $show_available)."</p>";
+		return $tmp_text;
+	}
+
+
        // content not available in requested language (bad!!) what now?
 	// if post is available in default language, show it
-$tmp_text .= " bla1 ";
 	if( $q_config['show_default_lang_content'] && in_array($q_config['default_language'], $available_languages)) {
 		$tmp_text = "";
 		if ( $show_available ) {
-			$tmp_text .= "<p>" . preg_replace('/%LANG:([^:]*):([^%]*)%/', qtrans_buildLanguageList($lang,$language,$available_languages), $q_config['not_available'][$lang]);
+			$tmp_text .= "<p class=notranslate>" . preg_replace('/%LANG:([^:]*):([^%]*)%/', qtrans_buildLanguageList($lang,$language,$available_languages), $q_config['not_available'][$lang]);
 //			if ( count($available_languages) > 1 )
 //				$tmp_text .= "<br>(shown in " . $q_config['language_name'][$q_config			if ( count($available_languages) >= 1 )
 		$tmp_text .= " ( " . $q_config['language_name'][$q_config['default_language']] . " text shown )";
@@ -837,18 +869,20 @@ $tmp_text .= " bla1 ";
 	// check if content is available in default language, if not return first language found. (prevent empty result)
 	if(!$show_available){
 		if($lang!=$q_config['default_language'])
-			return "(".$q_config['language_name'][$q_config['default_language']].") ".qtrans_use($q_config['default_language'], $text, $show_available);
+//			return "(".$q_config['language_name'][$q_config['default_language']].") ".qtrans_use($q_config['default_language'], $text, $show_available);
+			return qtrans_use($q_config['default_language'], $text, $show_available);
 		foreach($content as $language => $lang_text) {
 			$lang_text = trim($lang_text);
 			if(!empty($lang_text)) {
-				return "(".$q_config['language_name'][$language].") ".$lang_text;
+//				return "(".$q_config['language_name'][$language].") ".$lang_text;
+				return $lang_text;
 			}
 		}
 	}
 
 	// display selection for available languages
 	$language_list = qtrans_buildLanguageList($lang,$language,$available_languages);
-	return "<p>".preg_replace('/%LANG:([^:]*):([^%]*)%/', $language_list, $q_config['not_available'][$lang])."</p>";
+	return "<p class=notranslate>".preg_replace('/%LANG:([^:]*):([^%]*)%/', $language_list, $q_config['not_available'][$lang])."</p>";
 }
 
 // this could be called once and left inside function

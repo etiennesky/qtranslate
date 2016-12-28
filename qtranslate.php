@@ -121,6 +121,10 @@ $q_config['hide_untranslated'] = false;
 // show default lang content when content is not available for selected language
 $q_config['show_default_lang_content'] = false;
 
+// show lang content when content is not availabl for selected language
+// TODO add an option for this
+$q_config['show_single_lang_content'] = true;
+
 // Show post editor titles in a single line
 $q_config['show_titles_inline'] = false;
 
@@ -213,6 +217,7 @@ $q_config['not_available']['ar'] = "عفوا، هذه المدخلة موجود�
 $q_config['not_available']['pt'] = "Desculpe-nos, mas este texto esta apenas disponível em %LANG:, : y %.";
 $q_config['not_available']['pl'] = "Przepraszamy, ten wpis jest dostępny tylko w języku %LANG:, : i %.";
 $q_config['not_available']['gl'] = "Sentímolo moito, ista entrada atopase unicamente en %LANG;,: e %.";
+
 
 // qTranslate Services
 $q_config['qtranslate_services'] = false;
@@ -452,6 +457,8 @@ $q_config['windows_locale']['yo'] = "Yoruba";
 $q_config['windows_locale']['za'] = "Zhuang";
 $q_config['windows_locale']['zh'] = "Chinese";
 $q_config['windows_locale']['zu'] = "Zulu";
+
+$q_config['facebot'] = false;
 
 // Load qTranslate
 require_once(dirname(__FILE__)."/qtranslate_javascript.php");
